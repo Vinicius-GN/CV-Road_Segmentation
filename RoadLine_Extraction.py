@@ -3,8 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import morfological_op as morf
 
+# Function to apply threshold on an image using the HSV color space
 def HSV_threshold(image): 
     img = image  
+
+    #Here we have the different color ranges for the road segmentation depending on the image
 
     #Mean shift test segmentation
     #COLOR_MIN = np.array([18, 0, 208],np.uint8)
@@ -46,17 +49,20 @@ def HSV_threshold(image):
     #COLOR_MIN = np.array([40, 0, 173],np.uint8)
     #COLOR_MAX = np.array([47, 86, 237],np.uint8)
 
+    # Convert the image to HSV color space
     hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
 
+    # Apply threshold for image segmentation
     frame_threshed = cv2.inRange(hsv_img, COLOR_MIN, COLOR_MAX)
     return frame_threshed
 
+# Function to perform morphological operations on an image
 def morf_operations(image, kernel):
     HSV_th = HSV_threshold(image)
     cv2.imshow("HSV", HSV_th)
     cv2.waitKey(0)
 
-    #BP6 -> different approach
+    # Different approach for BP6
     opening_img = morf.closing(HSV_th, kernel)
     cv2.imshow("OP1", opening_img)
     cv2.waitKey(0)
@@ -69,8 +75,11 @@ def morf_operations(image, kernel):
     cv2.imshow("OP3", opening_img1)
     cv2.waitKey(0)
 
-    #kmean_seg     
-    """erode_img = morf.erode(HSV_th, kernel)
+    #Here we have the different morphological operations sequences for the road segmentation depending on the image
+
+    # Commented - kmean_seg approach
+    """
+    erode_img = morf.erode(HSV_th, kernel)
     cv2.imshow("OP1", erode_img)
     cv2.waitKey(0)
 
@@ -84,29 +93,37 @@ def morf_operations(image, kernel):
 
     closing_img = morf.closing(erode_img, kernel)
     cv2.imshow("OP4", closing_img)
-    cv2.waitKey(0)"""
+    cv2.waitKey(0)
+    """
 
-    #Segmentation1       
-    """erode_img = morf.erode(HSV_th, kernel)
+    # Commented - Segmentation1
+    """
+    erode_img = morf.erode(HSV_th, kernel)
     cv2.imshow("OP1", erode_img)
-    cv2.waitKey(0)"""
+    cv2.waitKey(0)
+    """
 
-    #SP4 -> different aproach
-    """opening_img = morf.opening(closing_img, kernel)
+    # Commented - Different approach for SP4
+    """
+    opening_img = morf.opening(closing_img, kernel)
     cv2.imshow("OP2", opening_img)
     cv2.waitKey(0)
 
     opening_img1 = morf.opening (opening_img, kernel)
     cv2.imshow("OP3", opening_img1)
-    cv2.waitKey(0)"""
+    cv2.waitKey(0)
+    """
 
-    #SP4
-    """dilate_img = morf.dilate(opening_img, kernel)
+    # Commented - SP4
+    """
+    dilate_img = morf.dilate(opening_img, kernel)
     cv2.imshow("Dilate", dilate_img)
-    cv2.waitKey(0)"""
+    cv2.waitKey(0)
+    """
 
-    #SP0
-    """kernel1 = morf.create_kernel(2, 'ellipse')
+    # Commented - SP0
+    """
+    kernel1 = morf.create_kernel(2, 'ellipse')
 
     dilate_img = morf.dilate(HSV_th, kernel1)
     cv2.imshow("Dilate0", dilate_img)
@@ -122,11 +139,12 @@ def morf_operations(image, kernel):
 
     closing_img = morf.closing(erode_img, kernel)
     cv2.imshow("Closing", closing_img)
-    cv2.waitKey(0)"""
-    
-    #BP6
+    cv2.waitKey(0)
+    """
 
-    """opening_img2 = morf.opening(opening_img, kernel)
+    # Commented - BP6
+    """
+    opening_img2 = morf.opening(opening_img, kernel)
     cv2.imshow("OP2", opening_img2)
     cv2.waitKey(0)
 
@@ -144,12 +162,14 @@ def morf_operations(image, kernel):
 
     closing_img = morf.closing(opening_img3, kernel2)
     cv2.imshow("OP4", closing_img)
-    cv2.waitKey(0)"""
+    cv2.waitKey(0)
+    """
 
     return opening_img1
 
+# Function to apply Canny edge detection on an image
 def Canny(image):
-    frame = cv2.GaussianBlur(image, (5,5), 0) #Reduces the noise 
+    frame = cv2.GaussianBlur(image, (5,5), 0) # Reduces noise
 
     cv2.imshow("gaussian_b", frame)
     cv2.waitKey(0)
@@ -160,6 +180,7 @@ def Canny(image):
     cv2.waitKey(0)
     return edges
 
+# Function to create a mask for the image
 def Create_mask(image):
     w = image.shape[0]
     h = image.shape[1]
@@ -170,7 +191,7 @@ def Create_mask(image):
     print("Height: ", h)
     tmask_points = np.array([(top_rec_x, top_rec_y), (top_rec_x2, top_rec_y2), (h, w), (0, w)])
 
-    #Create a mask
+    # Create a mask
     mask = np.zeros_like(image) 
     cv2.fillPoly(mask, [tmask_points], (255, 255, 255))
     masked_img = cv2.bitwise_and(image, mask)
@@ -178,6 +199,7 @@ def Create_mask(image):
     cv2.waitKey(0)
     return masked_img
 
+# Function to calculate the coordinates of a line based on its slope and intercept
 def cordinates(image, lane):
     slope, intersec = lane
     y1 = image.shape[0]
@@ -186,6 +208,7 @@ def cordinates(image, lane):
     x2 = int((y2 - intersec)/slope)
     return np.array([x1,y1,x2,y2])
 
+# Function to find the average line from the detected lines
 def unique_line(image, lines):
     left_lines = []
     right_lines = []
@@ -193,12 +216,12 @@ def unique_line(image, lines):
         for line in lines:
             x1,y1,x2, y2 = line.reshape(4)
             print(line)
-            param = np.polyfit((x1,x2), (y1, y2), 1) #Polyfit returns an array of [(slope), interesection]
+            param = np.polyfit((x1,x2), (y1, y2), 1) # Polyfit returns an array of [(slope), intersection]
             slope = param[0]
             intersection = param[1] 
-            if slope < 0:#How the pixels values starts from the top left, a slope < 0 represents a left line
+            if slope < 0: # Slope < 0 represents a left line
                 left_lines.append((slope, intersection))
-            if slope > 0:#How the pixels values starts from the top left, a slope > 0 represents a right line
+            if slope > 0: # Slope > 0 represents a right line
                 right_lines.append((slope, intersection))
     
     left_average = np.average(left_lines, axis=0) if left_lines else None
@@ -222,13 +245,13 @@ def unique_line(image, lines):
     else:
         return None
     
- #take the avarege of the lines
+# Function to draw lines on the image
 def draw_lines(image, Lines):
     road = np.zeros_like(image)
     if Lines is not None:
         for line in Lines:
             x1,y1,x2,y2 = line.reshape(4)
-            if(abs(y1-y2) > 10): #Avoid drawing horizontal lines
+            if(abs(y1-y2) > 10): # Avoid drawing horizontal lines
                 cv2.line(road, (x1,y1), (x2, y2), color=(0, 0, 0), thickness=3)
                 cv2.line(image, (x1,y1), (x2, y2), color=(0, 0, 0), thickness=3)
     return road
@@ -253,11 +276,9 @@ def main():
 
     result = cv2.addWeighted(img_main, 0.8, road, 1, 1)
         
-    #Showing results
+    # Showing results
     cv2.imshow("Frames", result)
     cv2.waitKey(0) 
-
-
 
 if __name__ == "__main__":
     main()
