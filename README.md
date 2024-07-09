@@ -6,36 +6,27 @@ This repository is dedicated to the exploration and application of computer visi
 ## Features
 - **Region of Interest (ROI)** focusing on specific horizon lines.
 - **Thresholding**: Image binarization based on the HSV color scale.
-- **Morphological Operations**: Includes erosion, dilation, opening, and closing.
+- **Morphological Operations**: Includes erosion, dilation, opening, and closing for improving the Thresholding results.
 - **Clustering**: Used in segmentation scenarios.
 - **Canny Edge Detection**: Applied for edge detection in images.
 
 ## Repository Structure
 CV-Road_Segmentation
 │
-├── Clustering_codes/ # Scripts for clustering algorithms
-
-├── Images/ # Miscellaneous images
-
-├── KITTI/ # KITTI dataset specific scripts
-
-├── pycache/ # Python cache files
-
-├── carina_dataset/ # Scripts and data for Carina dataset
-
-├── ic_images/ # Image collection for internal testing
-
-├── Line_extractionOnVideo.py # Script for video line extraction
-
-├── RoadLine_Extraction.py # Script for extracting road lines
-
-├── Road_Segmentation.py # Script for segmenting roads
-
-├── histogram_plt.py # Script for plotting histograms
-
-├── lower_upper_HSV.py # Script for HSV range adjustment
-
-└── morphological_op.py # Scripts for applying morphological operations
+├── Clustering_codes/ # Scripts for clustering algorithms  
+├── Images/ # VArious images for testing and obtained results  
+├── KITTI_roadDataset/ # KITTI_road dataset images   
+├── Results/ # Result images for different approaches  
+├── Videos_results/ # Result videos for different approaches  
+├── __pycache__/ # Python cache files  
+├── carina_dataset/ # Local testing images  
+├── git_img/ # Images needed to the README.ms file  
+├── Line_extractionOnVideo.py # Script for video line extraction  
+├── RoadLine_Extraction.py # Script for extracting road lines  
+├── Road_Segmentation.py # Script for segmenting roads  
+├── histogram_plt.py # Script for plotting histograms  
+├── lower_upper_HSV.py # Script for HSV range adjustment  
+└── morphological_op.py # Scripts for applying morphological operations  
 
 
 ## Results
@@ -74,15 +65,3 @@ CV-Road_Segmentation
 <p align="center">
   <img src="git_img/sg.png" alt="Segmentation" width="65%" />
 </p>
-
-
-## Installation
-To get started with this project, clone the repository and install the required dependencies:
-   
-
-## Usage
-
-To run the main program, execute:
-
-basH
-python Road_Segmentation.py
