@@ -42,8 +42,8 @@ def HSV_threshold(image):
     # COLOR_MAX = np.array([130, 252, 254],np.uint8)
 
     # means_h2
-    COLOR_MIN = np.array([55, 143, 168],np.uint8)
-    COLOR_MAX = np.array([111, 255, 181],np.uint8)    
+    COLOR_MIN = np.array([28, 61, 196],np.uint8)
+    COLOR_MAX = np.array([32, 72, 255],np.uint8)    
 
     # Convert the image to HSV color space
     hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
@@ -180,8 +180,8 @@ def draw_lines(image, Lines):
     return road
 
 def main():
-    img_background = cv2.imread('ic_images/um_000008.png')
-    img_main = cv2.imread('ic_images/clust+hsv+morf/mean_shift++/mask/segmentation42.png')
+    img_background = cv2.imread('Images/BP6.png')
+    img_main = cv2.imread('Images/segmentation.png')
     # img_main = img_background
   
     if img_main is None or img_background is None:

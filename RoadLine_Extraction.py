@@ -252,8 +252,8 @@ def draw_lines(image, Lines):
         for line in Lines:
             x1,y1,x2,y2 = line.reshape(4)
             if(abs(y1-y2) > 10): # Avoid drawing horizontal lines
-                cv2.line(road, (x1,y1), (x2, y2), color=(0, 0, 0), thickness=3)
-                cv2.line(image, (x1,y1), (x2, y2), color=(0, 0, 0), thickness=3)
+                cv2.line(road, (x1,y1), (x2, y2), color=(255, 0, 0), thickness=3)
+                cv2.line(image, (x1,y1), (x2, y2), color=(255, 0, 0), thickness=3)
     return road
 
 def main():

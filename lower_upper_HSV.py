@@ -5,11 +5,11 @@ def nothing(x):
     pass
 
 # Load image
-image = cv2.imread('/home/vinicius/Documents/Ic_doc/Road_seg/carla_dataset/easy1.png')
+image = cv2.imread('Images/segmentation.png')
 display_width, display_height = 640, 480
 
-# # Resize images for display
-image = cv2.resize(image, (display_width, display_height))
+# # # Resize images for display
+# image = cv2.resize(image, (display_width, display_height))
 
 # Create a window
 cv2.namedWindow('image')
